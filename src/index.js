@@ -1,25 +1,22 @@
 const express = require("express");
-const loginroutes = require("./routes/loginroutes");
+const morgan = require("morgan");
 const bodyParser = require("body-parser");
-let cors = require("cors");
-// body parser added
+
+const cors = require("cors");
+//---------Init---------
 const app = express();
+
+//---- settings -----
+app.set("port", process.env.PORT || 4000);
+//------Midlewares------
+app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cors()); //permitir cross origin requests
 
-// Allow cross origin requests
-app.use(cors());
-
-const router = express.Router();
-
-// test route
-router.get("/", function (req, res) {
-  res.json({ message: "welcome to our upload module apis" });
+//----routes----
+app.use(require("./routes/user"));
+// ----- servidor -----
+app.listen(app.get("port"), () => {
+  console.log("server on port", app.get("port"));
 });
-
-//route to handle user registration
-router.post("/register", loginroutes.register);
-router.post("/login", loginroutes.login);
-
-app.use("/", router);
-app.listen(4000);
