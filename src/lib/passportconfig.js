@@ -42,9 +42,8 @@ module.exports = function(passport) {
         };
         newUserMysql.email    = email;
         newUserMysql.password = await helpers.encryptPassword(password);
-        console.log(newUserMysql.password);
         pool.query('INSERT INTO usuario SET ? ', newUserMysql ,function(err,rows){
-          newUserMysql.id = rows.insertId;
+          newUserMysql.id = pool.query('SELECT LAST_INSERT_ID()');
           return done(null, newUserMysql);
         });	
       }	
@@ -69,6 +68,7 @@ module.exports = function(passport) {
         console.log('Wrong password');
         return done(null, false);
       };
+      console.log(rows[0]);
       return done(null, rows[0]);			
     });
   }));

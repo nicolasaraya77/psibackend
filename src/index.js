@@ -47,6 +47,13 @@ app.use((req, res, next)=>{
 app.use(require('./routes'));
 app.use(require('./routes/authentication'));
 app.use(require('./routes/user'));
+app.use(require('./routes/convenio'));
+app.use(require('./routes/tipoinstitucion'));
+app.use(require('./routes/coordinador'));
+app.use(require('./routes/derivacion'));
+app.use(require('./routes/hechosconsultantes'));
+app.use(require('./routes/motivo'));
+app.use(require('./routes/paciente'));
 
 //-----Start server-----
 app.listen(app.get('port'), ()=>{
