@@ -1,8 +1,11 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-
+const passportJWT = require("passport-jwt");
 const pool = require("../database");
 const helpers = require("./helpers");
+
+const ExtractJWT = passportJWT.ExtractJwt;
+const JWTStrategy = passportJWT.Strategy;
 
 module.exports = function (passport) {
   // passport session setup ==================================================
