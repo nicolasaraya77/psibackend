@@ -45,7 +45,7 @@ module.exports = function(passport) {
         pool.query('INSERT INTO usuario SET ? ', newUserMysql ,function(err,rows){
           newUserMysql.id = pool.query('SELECT LAST_INSERT_ID()');
           return done(null, newUserMysql);
-        });	
+        });
       }	
     });
   }));

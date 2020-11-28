@@ -6,8 +6,12 @@ const { isLoggedIn } = require('../lib/auth');
 router.get('/paciente', isLoggedIn, async (req, res) => {
     pool.query('SELECT * FROM Paciente', async(err,rows) =>{
         if (!err) {
-            res.json(rows);
-            console.log("Paciente retornados con exito!");
+            res.send({
+                code: 200,
+                success: "Pacientes retornados con exito!",
+                data: rows
+            });
+            console.log("Pacientes retornados con exito!");
             console.log(rows)
         }
         else {
@@ -24,7 +28,11 @@ router.get('/paciente/:rut', isLoggedIn, async (req, res) => {
     const rut = req.params.rut;
     pool.query('SELECT * FROM Paciente WHERE RUT = ?', rut ,async(err,rows) =>{
         if (!err) {
-            res.json(rows);
+            res.send({
+                code: 200,
+                success: "Paciente retornado con exito!",
+                data: rows
+            });
             console.log("Paciente retornado con exito!");
             console.log(rows)
         }

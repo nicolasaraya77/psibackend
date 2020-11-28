@@ -7,6 +7,7 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const bodyParser = require('body-parser');
+const cors = require("cors");
 
 const { database } = require('./keys');
 
@@ -22,6 +23,11 @@ app.set('port', process.env.PORT || 4000);
 
 //------Midlewares------
 app.use(morgan('dev'));
+/*app.use(
+    cors({
+      origin: "http://localhost:3000", //locacion del liente en react
+    })
+  ); //permitir cross origin requests*/
 app.use(session({
     secret: 'clinicapsicoudp',
     resave: true,
@@ -54,6 +60,7 @@ app.use(require('./routes/derivacion'));
 app.use(require('./routes/hechosconsultantes'));
 app.use(require('./routes/motivo'));
 app.use(require('./routes/paciente'));
+app.use(require('./routes/contacto'));
 
 //-----Start server-----
 app.listen(app.get('port'), ()=>{

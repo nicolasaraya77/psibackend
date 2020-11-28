@@ -6,7 +6,11 @@ const { isLoggedIn } = require('../lib/auth');
 router.get('/convenio', isLoggedIn, async (req, res) => {
     pool.query('SELECT * FROM Convenio', async(err,rows) =>{
         if (!err) {
-            res.json(rows);
+            res.send({
+                code: 200,
+                success: "Convenios retornados con exito!",
+                data: rows
+            });
             console.log("Convenios retornados con exito!");
             console.log(rows)
         }
@@ -24,7 +28,11 @@ router.get('/convenio/:id', isLoggedIn, async (req, res) => {
     const id = req.params.id;
     pool.query('SELECT * FROM Convenio WHERE id_Convenio = ?', id ,async(err,rows) =>{
         if (!err) {
-            res.json(rows);
+            res.send({
+                code: 200,
+                success: "Convenio retornado con exito!",
+                data: rows
+            });
             console.log("Convenio retornado con exito!");
             console.log(rows)
         }

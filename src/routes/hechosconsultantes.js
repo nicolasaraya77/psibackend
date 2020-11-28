@@ -6,7 +6,11 @@ const { isLoggedIn } = require('../lib/auth');
 router.get('/hechosconsultantes', isLoggedIn, async (req, res) => {
     pool.query('SELECT * FROM HechosConsultantes', async(err,rows) =>{
         if (!err) {
-            res.json(rows);
+            res.send({
+                code: 200,
+                success: "hechosconsultantes retornados con exito!",
+                data: rows
+            });
             console.log("hechosconsultantes retornados con exito!");
             console.log(rows)
         }
@@ -21,10 +25,14 @@ router.get('/hechosconsultantes', isLoggedIn, async (req, res) => {
 });
 
 router.get('/hechosconsultantes/:rut', isLoggedIn, async (req, res) => {
-    const rut = req.params;
+    const rut = req.params.rut;
     pool.query('SELECT * FROM HechosConsultantes WHERE Paciente_RUT = ?', rut ,async(err,rows) =>{
         if (!err) {
-            res.json(rows);
+            res.send({
+                code: 200,
+                success: "hechosconsultantes retornados con exito!",
+                data: rows
+            });
             console.log("hechoconsultante retornado con exito!");
             console.log(rows)
         }
