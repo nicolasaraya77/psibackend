@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const { isLoggedIn } = require("../lib/auth");
 const passportconfig = require("../lib/passportconfig");
@@ -9,53 +9,54 @@ passportconfig(passport);
 router.post("/login", (req, res, next) => {
   passport.authenticate("local-login", (err, user, info) => {
     if (err) {
-      res.send({
-        code: 400,
-        failed: "un error ha ocurrido",
-      });
+      res.status(400).json({ err });
     }
     if (!user) {
-      res.send({
-        code: 206,
-        success: "Usuario no existe",
-      });
+      return res.status(400).json({ msg: "El usuario no existe" });
     } else {
-      req.logIn(user, (err) => {
+      req.logIn(user, { session: false }, (err) => {
         if (err) throw err;
-        res.send({
-          code: 200,
-          success: "inicio de sesión exitoso",
+        const body = {
+          _id: user._id,
+          email: user.email,
+          password: user.password,
+        };
+        const token = jwt.sign({ user: body }, "TOP_SECRET");
+        res.json({
+          token,
+          mensaje: "Inicio de sesión exitoso",
         });
-        console.log(req.user);
+        console.log(token);
       });
     }
   })(req, res, next);
 });
 
 router.post("/signup", (req, res, next) => {
-  passport.authenticate("local-signup", (err, user, info) => {
-    if (err) {
-      res.send({
-        code: 400,
-        failed: "un error ha ocurrido",
-      });
-    }
-    if (!user) {
-      res.send({
-        code: 206,
-        success: "El email usado ya esta tomado",
-      });
-    } else {
-      req.logIn(user, (err) => {
-        if (err) throw err;
-        res.send({
-          code: 200,
-          success: "Registro nuevo exitoso",
+  passport.authenticate(
+    "local-signup",
+    { session: false },
+    (err, user, info) => {
+      if (err) {
+        console.log(err);
+        res.status(400).json("Hubo un error de servidor");
+      } else {
+        req.logIn(user, (err) => {
+          if (err) {
+            res.status(500).json({ msg: "El usuario ya existe." });
+          } else {
+            if (!user) {
+              res.status(404).json({ msg: "Error al crear el usuario." });
+            } else {
+              res.status(200).json({ message: "registro" });
+            }
+          }
+
+          console.log(req.user);
         });
-        console.log(req.user);
-      });
+      }
     }
-  })(req, res, next);
+  )(req, res, next);
 });
 
 router.get("/logout", (req, res) => {
