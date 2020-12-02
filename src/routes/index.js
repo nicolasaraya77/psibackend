@@ -1,20 +1,23 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { isLoggedIn } = require('../lib/auth');
+const { isLoggedIn } = require("../lib/auth");
 
-router.get('/', isLoggedIn, async (req, res) => {
-    res.send({
-        code: 200,
-        success: "Hello world! Successfully Authenticated",
-    });
+router.get("/", isLoggedIn, async (req, res) => {
+  res.send({
+    code: 200,
+    success: "Hello world! Successfully Authenticated",
+  });
 });
 
-router.get('/login', async (req, res) => {
+router.get("/login", async (req, res) => {
+  try {
     var aux = req.isAuthenticated();
-    res.send({ 
-        state: aux, 
-        context : 'isAunthenticated function'
-    });
+
+    res.json({ aux, token: req.query.secret_token });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ msg: "Hubo un error" });
+  }
 });
 
 module.exports = router;
