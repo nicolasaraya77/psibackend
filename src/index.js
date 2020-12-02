@@ -61,6 +61,8 @@ app.use(require('./routes/hechosconsultantes'));
 app.use(require('./routes/motivo'));
 app.use(require('./routes/paciente'));
 app.use(require('./routes/contacto'));
+app.use(require('./routes/estado'));
+
 
 //-----Start server-----
 app.listen(app.get('port'), ()=>{

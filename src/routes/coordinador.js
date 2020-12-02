@@ -46,9 +46,32 @@ router.get('/coordinador/:id', isLoggedIn, async (req, res) => {
     });
 });
 
+router.post('/coordinador', isLoggedIn, async (req, res) => {
+    const {id_Coordinador, Convenio_id_Convenio, nombre, apellido, cargo, email, telefono} = req.body;
+    pool.query('UPDATE Coordinador SET Convenio_id_Convenio = (?),  nombre = (?),  apellido = (?),  cargo = (?),  email = (?),  telefono = (?), WHERE id_Coordinador = (?)',
+    [Convenio_id_Convenio, nombre, apellido, cargo, email, telefono, id_Coordinador],
+    async(err,rows) =>{
+        if (!err) {
+            res.send({
+                code: 200,
+                success: "Coordinador cambiado exitosamente",
+            });
+            console.log("Coordinador cambiado con exito!");
+            console.log(rows)
+        }
+        else {
+            res.send({
+                code: 400,
+                failed: "un error ha ocurrido",
+            });
+            console.log(err);
+        }
+    });
+});
+
 router.post('/coordinador/nuevo', isLoggedIn, async (req, res) => {
-    const {id_Convenio, nombre, apellido, cargo, email, telefono} = req.body;
-    pool.query('INSERT INTO Coordinador (Convenio_id_Convenio, nombre, apellido, cargo, email, telefono) VALUES (?,?,?,?,?,?)', [id_Convenio, nombre, apellido, cargo, email, telefono],
+    const {Convenio_id_Convenio, nombre, apellido, cargo, email, telefono} = req.body;
+    pool.query('INSERT INTO Coordinador (Convenio_id_Convenio, nombre, apellido, cargo, email, telefono) VALUES (?,?,?,?,?,?)', [Convenio_id_Convenio, nombre, apellido, cargo, email, telefono],
     async(err,rows) =>{
         if (!err) {
             res.send({

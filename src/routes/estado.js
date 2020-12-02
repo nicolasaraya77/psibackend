@@ -3,15 +3,15 @@ const router = express.Router();
 const pool = require('../database');
 const { isLoggedIn } = require('../lib/auth');
 
-router.get('/convenio', isLoggedIn, async (req, res) => {
-    pool.query('SELECT * FROM Convenio', async(err,rows) =>{
+router.get('/estado', isLoggedIn, async (req, res) => {
+    pool.query('SELECT * FROM Estado', async(err,rows) =>{
         if (!err) {
             res.send({
                 code: 200,
-                success: "Convenios retornados con exito!",
+                success: "Estado retornados con exito!",
                 data: rows
             });
-            console.log("Convenios retornados con exito!");
+            console.log("Estado retornados con exito!");
             console.log(rows)
         }
         else {
@@ -24,16 +24,16 @@ router.get('/convenio', isLoggedIn, async (req, res) => {
     });
 });
 
-router.get('/convenio/:id', isLoggedIn, async (req, res) => {
+router.get('/estado/:id', isLoggedIn, async (req, res) => {
     const id = req.params.id;
-    pool.query('SELECT * FROM Convenio WHERE id_Convenio = ?', id ,async(err,rows) =>{
+    pool.query('SELECT * FROM Estado WHERE id_Estado = ?', id ,async(err,rows) =>{
         if (!err) {
             res.send({
                 code: 200,
-                success: "Convenio retornado con exito!",
+                success: "Estado retornado con exito!",
                 data: rows
             });
-            console.log("Convenio retornado con exito!");
+            console.log("Estado retornado con exito!");
             console.log(rows)
         }
         else {
@@ -46,17 +46,17 @@ router.get('/convenio/:id', isLoggedIn, async (req, res) => {
     });
 });
 
-router.post('/convenio', isLoggedIn, async (req, res) => {
-    const {id_Convenio, TipoInstitucion_id_TipoInstitucion, nombre, fecha_inicio, estado} = req.body;
-    pool.query('UPDATE Convenio SET TipoInstitucion_id_TipoInstitucion = (?),  nombre = (?),  fecha_inicio = (?),  estado = (?) WHERE id_Convenio = (?)',
-    [TipoInstitucion_id_TipoInstitucion, nombre, new Date(fecha_inicio), estado, id_Convenio],
+router.post('/estado', isLoggedIn, async (req, res) => {
+    const {id_Estado, nombre} = req.body;
+    pool.query('UPDATE Estado SET nombre = (?) WHERE id_Estado = (?)',
+    [nombre, id_Estado],
     async(err,rows) =>{
         if (!err) {
             res.send({
                 code: 200,
-                success: "Convenio cambiado exitosamente",
+                success: "Estado cambiado exitosamente",
             });
-            console.log("Convenio cambiado con exito!");
+            console.log("Estado cambiado con exito!");
             console.log(rows)
         }
         else {
@@ -69,16 +69,16 @@ router.post('/convenio', isLoggedIn, async (req, res) => {
     });
 });
 
-router.post('/convenio/nuevo', isLoggedIn, async (req, res) => {
-    const {TipoInstitucion_id_TipoInstitucion, nombre, fecha_inicio, estado} = req.body;
-    pool.query('INSERT INTO Convenio (TipoInstitucion_id_Tipoinstitucion, nombre, fecha_inicio, estado) VALUES (?,?,?,?)', [TipoInstitucion_id_TipoInstitucion, nombre, new Date(fecha_inicio), estado],
+router.post('/estado/nuevo', isLoggedIn, async (req, res) => {
+    const {nombre} = req.body;
+    pool.query('INSERT INTO Estado (nombre) VALUES (?)', [nombre],
     async(err,rows) =>{
         if (!err) {
             res.send({
                 code: 200,
-                success: "Convenio nuevo ingresado exitosamente",
+                success: "Estado nuevo ingresado exitosamente",
             });
-            console.log("Convenio retornado con exito!");
+            console.log("Estado retornado con exito!");
             console.log(rows)
         }
         else {
@@ -91,13 +91,13 @@ router.post('/convenio/nuevo', isLoggedIn, async (req, res) => {
     });
 });
 
-router.delete('/convenio/:id', isLoggedIn, async (req, res) => {
+router.delete('/estado/:id', isLoggedIn, async (req, res) => {
     const {id} = req.params;
-    pool.query('DFELETE FROM Convenio WHERE id_Convenio = ?', [id] ,async(err,rows) =>{
+    pool.query('DFELETE FROM Estado WHERE id_Estado = ?', [id] ,async(err,rows) =>{
         if (!err) {
             res.send({
                 code: 200,
-                success: "Convenio eliminado exitosamente",
+                success: "Estado eliminado exitosamente",
             });
         }
         else {

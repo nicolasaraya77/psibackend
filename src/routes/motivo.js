@@ -46,6 +46,29 @@ router.get('/motivo/:id', isLoggedIn, async (req, res) => {
     });
 });
 
+router.post('/motivo', isLoggedIn, async (req, res) => {
+    const {id_Motivo, nombre} = req.body;
+    pool.query('UPDATE Motivo SET nombre = (?) WHERE id_Motivo = (?)',
+    [nombre, id_Motivo],
+    async(err,rows) =>{
+        if (!err) {
+            res.send({
+                code: 200,
+                success: "Motivo cambiado exitosamente",
+            });
+            console.log("Motivo cambiado con exito!");
+            console.log(rows)
+        }
+        else {
+            res.send({
+                code: 400,
+                failed: "un error ha ocurrido",
+            });
+            console.log(err);
+        }
+    });
+});
+
 router.post('/motivo/nuevo', isLoggedIn, async (req, res) => {
     const {nombre} = req.body;
     pool.query('INSERT INTO Motivo (nombre) VALUES (?)', [nombre],

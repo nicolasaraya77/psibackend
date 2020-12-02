@@ -46,6 +46,29 @@ router.get('/tipoinstitucion/:id', isLoggedIn, async (req, res) => {
     });
 });
 
+router.post('/tipoinstitucion', isLoggedIn, async (req, res) => {
+    const {id_TipoInstitucion, nombre} = req.body;
+    pool.query('UPDATE TipoInstitucion SET nombre = (?) WHERE id_TipoInstitucion  = (?)',
+    [nombre, id_TipoInstitucion],
+    async(err,rows) =>{
+        if (!err) {
+            res.send({
+                code: 200,
+                success: "TipoInstitucion cambiado exitosamente",
+            });
+            console.log("TipoInstitucion cambiado con exito!");
+            console.log(rows)
+        }
+        else {
+            res.send({
+                code: 400,
+                failed: "un error ha ocurrido",
+            });
+            console.log(err);
+        }
+    });
+});
+
 router.post('/tipoinstitucion/nuevo', isLoggedIn, async (req, res) => {
     const {nombre} = req.body;
     pool.query('INSERT INTO TipoInstitucion (nombre) VALUES (?)', [nombre],

@@ -46,9 +46,32 @@ router.get('/derivacion/:id', isLoggedIn, async (req, res) => {
     });
 });
 
+router.post('/derivacion', isLoggedIn, async (req, res) => {
+    const {id_Derivacion, Motivo_id_Motivo} = req.body;
+    pool.query('UPDATE Derivacion SET Motivo_id_Motivo = (?) WHERE id_Derivacion = (?)',
+    [Motivo_id_Motivo, id_Derivacion],
+    async(err,rows) =>{
+        if (!err) {
+            res.send({
+                code: 200,
+                success: "Derivacion cambiada exitosamente",
+            });
+            console.log("Derivacion cambiada con exito!");
+            console.log(rows)
+        }
+        else {
+            res.send({
+                code: 400,
+                failed: "un error ha ocurrido",
+            });
+            console.log(err);
+        }
+    });
+});
+
 router.post('/derivacion/nuevo', isLoggedIn, async (req, res) => {
-    const {id_Motivo, RUT, id_Coordinador} = req.body;
-    pool.query('INSERT INTO Derivacion (Motivo_id_Motivo, Paciente_RUT, Coordinador_id_Coordinador) VALUES (?,?,?)', [id_Motivo, RUT, id_Coordinador],
+    const {Motivo_id_Motivo, RUT, id_Coordinador} = req.body;
+    pool.query('INSERT INTO Derivacion (Motivo_id_Motivo, Paciente_RUT, Coordinador_id_Coordinador) VALUES (?,?,?)', [Motivo_id_Motivo, RUT, id_Coordinador],
     async(err,rows) =>{
         if (!err) {
             res.send({

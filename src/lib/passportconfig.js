@@ -43,7 +43,8 @@ module.exports = function(passport) {
         newUserMysql.email    = email;
         newUserMysql.password = await helpers.encryptPassword(password);
         pool.query('INSERT INTO usuario SET ? ', newUserMysql ,function(err,rows){
-          newUserMysql.id = pool.query('SELECT LAST_INSERT_ID()');
+          console.log(rows.insertId);
+          newUserMysql.id = rows.insertId;
           return done(null, newUserMysql);
         });
       }	
