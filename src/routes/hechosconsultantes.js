@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../database");
-//const { isLoggedIn } = require("../lib/auth");
 const md_auth = require("../lib/authenticated");
 
 router.get("/hechosconsultantes", [md_auth.ensureAuth], async (req, res) => {

@@ -3,15 +3,15 @@ const router = express.Router();
 const pool = require("../database");
 const md_auth = require("../lib/authenticated");
 
-router.get("/contacto", [md_auth.ensureAuth], async (req, res) => {
-  pool.query("SELECT * FROM Contacto", async (err, rows) => {
+router.get("/estado", [md_auth.ensureAuth], async (req, res) => {
+  pool.query("SELECT * FROM Estado", async (err, rows) => {
     if (!err) {
       res.send({
         code: 200,
-        success: "Contactos retornados con exito!",
-        data: rows,
+        success: "Estado retornados con exito!",
+        rows,
       });
-      console.log("Contactos retornados con exito!");
+      console.log("Estado retornados con exito!");
       console.log(rows);
     } else {
       res.send({
@@ -23,19 +23,19 @@ router.get("/contacto", [md_auth.ensureAuth], async (req, res) => {
   });
 });
 
-router.get("/contacto/:id", [md_auth.ensureAuth], async (req, res) => {
+router.get("/estado/:id", [md_auth.ensureAuth], async (req, res) => {
   const id = req.params.id;
   pool.query(
-    "SELECT * FROM Contacto WHERE id_Contacto = ?",
+    "SELECT * FROM Estado WHERE id_Estado = ?",
     id,
     async (err, rows) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Contacto retornado con exito!",
+          success: "Estado retornado con exito!",
           data: rows,
         });
-        console.log("Contacto retornado con exito!");
+        console.log("Estado retornado con exito!");
         console.log(rows);
       } else {
         res.send({
@@ -48,19 +48,18 @@ router.get("/contacto/:id", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
-router.get("/contacto/rut/:rut", [md_auth.ensureAuth], async (req, res) => {
-  const rut = req.params.rut;
+router.put("/estado/:id", [md_auth.ensureAuth], async (req, res) => {
+  const { id_Estado, nombre } = req.body;
   pool.query(
-    "SELECT * FROM Contacto WHERE Paciente_RUT = ?",
-    rut,
+    "UPDATE Estado SET nombre = (?) WHERE id_Estado = (?)",
+    [nombre, id_Estado],
     async (err, rows) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Contactos retornados con exito!",
-          data: rows,
+          success: "Estado cambiado exitosamente",
         });
-        console.log("Contactos retornados con exito!");
+        console.log("Estado cambiado con exito!");
         console.log(rows);
       } else {
         res.send({
@@ -73,18 +72,18 @@ router.get("/contacto/rut/:rut", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
-router.post("/contacto/nuevo", [md_auth.ensureAuth], async (req, res) => {
-  const { encargado, fecha, respuesta, descripcion, rut } = req.body;
+router.post("/estado/nuevo", [md_auth.ensureAuth], async (req, res) => {
+  const { nombre } = req.body;
   pool.query(
-    "INSERT INTO Contacto (encargado, fecha, respuesta, descripcion, Paciente_RUT) VALUES (?,?,?,?,?)",
-    [encargado, new Date(fecha), respuesta, descripcion, rut],
+    "INSERT INTO Estado (nombre) VALUES (?)",
+    [nombre],
     async (err, rows) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Contacto nuevo ingresado exitosamente",
+          success: "Estado nuevo ingresado exitosamente",
         });
-        console.log("Contacto retornado con exito!");
+        console.log("Estado retornado con exito!");
         console.log(rows);
       } else {
         res.send({
@@ -97,16 +96,16 @@ router.post("/contacto/nuevo", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
-router.delete("/contacto/:id", [md_auth.ensureAuth], async (req, res) => {
+router.delete("/estado/:id", [md_auth.ensureAuth], async (req, res) => {
   const { id } = req.params;
   pool.query(
-    "DFELETE FROM Contacto WHERE id_Contacto = ?",
+    "DELETE FROM Estado WHERE id_Estado = ?",
     [id],
     async (err, rows) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Contacto eliminado exitosamente",
+          success: "Estado eliminado exitosamente",
         });
       } else {
         res.send({
