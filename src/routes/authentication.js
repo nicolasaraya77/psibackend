@@ -10,12 +10,16 @@ router.post("/login", (req, res, next) => {
   passport.authenticate("local-login", (err, user, info) => {
     if (err) {
       res.status(400).json({ err });
-    }
-    if (!user) {
-      return res.status(400).json({ msg: "El usuario no existe" });
     } else {
       req.logIn(user, { session: false }, (err) => {
-        if (err) throw err;
+        //if (err) throw err;
+        if (err) {
+          return res.status(500).json({ msg: "Error de servidor" });
+        }
+        if (!user) {
+          return res.status(400).json({ msg: "El usuario no existe" });
+        }
+        console.log(err);
         const body = {
           _id: user._id,
           email: user.email,
@@ -24,7 +28,7 @@ router.post("/login", (req, res, next) => {
         const token = jwt.sign({ user: body }, "TOP_SECRET");
         res.json({
           token,
-          mensaje: "Inicio de sesión exitoso",
+          message: "Inicio de sesión exitoso",
         });
         console.log(token);
       });

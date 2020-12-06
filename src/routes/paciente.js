@@ -9,7 +9,7 @@ router.get("/paciente", [md_auth.ensureAuth], async (req, res) => {
       res.send({
         code: 200,
         success: "Pacientes retornados con exito!",
-        data: rows,
+        rows,
       });
       console.log("Pacientes retornados con exito!");
       console.log(rows);
@@ -80,7 +80,7 @@ router.post("/paciente/nuevo", [md_auth.ensureAuth], async (req, res) => {
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          failed: "Paciente ya existe",
         });
         console.log(err);
       }

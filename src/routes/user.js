@@ -23,6 +23,28 @@ router.get("/usuario", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
+//retorna el usuario por id
+router.get("/usuario/:id", [md_auth.ensureAuth], async (req, res) => {
+  const id = req.params.id;
+  pool.query(
+    "SELECT * FROM Usuario WHERE id = ? ",
+    id,
+
+    async (err, rows) => {
+      if (!err) {
+        res.status(200).send({ rows });
+        console.log("Usuario retornado con exito!");
+        console.log(rows);
+      } else {
+        res
+          .status(404)
+          .send({ message: "No se ha encontrado ningun usuario." });
+        console.log(err);
+      }
+    }
+  );
+});
+
 router.post("/usuario", [md_auth.ensureAuth], async (req, res) => {
   const {
     id_Usuario,
