@@ -47,7 +47,7 @@ router.get("/usuario/:id", [md_auth.ensureAuth], async (req, res) => {
 
 router.put("/usuario/:id", [md_auth.ensureAuth], async (req, res) => {
   const {
-    id,
+    id_Usuario,
     TipoUsuario_id_TipoUsuario,
     nombre,
     nombre_social,
@@ -56,7 +56,14 @@ router.put("/usuario/:id", [md_auth.ensureAuth], async (req, res) => {
   } = req.body;
   pool.query(
     "UPDATE Usuario SET TipoUsuario_id_TipoUsuario = (?), nombre = (?), nombre_social = (?), email = (?), password = (?) WHERE id_Usuario  = (?)",
-    [TipoUsuario_id_TipoUsuario, nombre, nombre_social, email, password, id],
+    [
+      TipoUsuario_id_TipoUsuario,
+      nombre,
+      nombre_social,
+      email,
+      password,
+      id_Usuario,
+    ],
     async (err, rows) => {
       if (!err) {
         res.send({

@@ -55,9 +55,10 @@ router.post("/paciente/nuevo", [md_auth.ensureAuth], async (req, res) => {
     apellido,
     id_PrevisionSalud,
     fecha_nacimiento,
+    fecha_ingreso,
   } = req.body;
   pool.query(
-    "INSERT INTO Paciente (RUT, nombre, nombre_social, pronombre, genero, sexo, apellido, PrevisionSalud_id_PrevisionSalud, fecha_nacimiento) VALUES (?,?,?,?,?,?,?,?,?)",
+    "INSERT INTO Paciente (RUT, nombre, nombre_social, pronombre, genero, sexo, apellido, PrevisionSalud_id_PrevisionSalud, fecha_nacimiento,fecha_ingreso) VALUES (?,?,?,?,?,?,?,?,?,?)",
     [
       rut,
       nombre,
@@ -68,6 +69,7 @@ router.post("/paciente/nuevo", [md_auth.ensureAuth], async (req, res) => {
       apellido,
       id_PrevisionSalud,
       new Date(fecha_nacimiento),
+      new Date(fecha_ingreso),
     ],
     async (err, rows) => {
       if (!err) {
