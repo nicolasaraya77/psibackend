@@ -88,6 +88,30 @@ router.get('/tipousuario', isLoggedIn, async (req, res) => {
     });
 });
 
+router.get('/politica/:id', isLoggedIn, async (req, res) => {
+    const {id} = req.params;
+    pool.query('SELECT Politica.nombre FROM Politica INNER JOIN Permiso ON Permiso.Politica_id_Politica = Politica.id_Politica WHERE Permiso.TipoUsuario_id_TipoUsuario = ?;',
+    [id],
+    async(err,rows) =>{
+        if (!err) {
+            res.send({
+                code: 200,
+                success: "permisos del rol retornados con exito!",
+                data: rows
+            });
+            console.log("permisos del rol retornado con exito!");
+            console.log(rows)
+        }
+        else {
+            res.send({
+                code: 400,
+                failed: "un error ha ocurrido",
+            });
+            console.log(err);
+        }
+    });
+});
+
 router.post('/tipousuario/nuevo', isLoggedIn, async (req, res) => {
     const {nombre} = req.body;
     pool.query('INSERT INTO TipoUsuario (nombre) VALUES (?)', [nombre],
