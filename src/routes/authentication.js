@@ -35,8 +35,8 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-router.post("/signup", (req, res, next) => {
-  passport.authenticate(
+router.post("/signup", async (req, res, next) => {
+  await passport.authenticate(
     "local-signup",
     { session: false },
     (err, user, info) => {
@@ -51,7 +51,7 @@ router.post("/signup", (req, res, next) => {
             if (!user) {
               res.status(404).json({ msg: "Error al crear el usuario." });
             } else {
-              res.status(200).json({ message: "registro" });
+              res.status(200).json({ message: "registro exitoso" });
             }
           }
 

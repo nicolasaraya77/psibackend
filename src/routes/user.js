@@ -83,4 +83,24 @@ router.put("/usuario/:id", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
+router.get("/tipousuario", async (req, res) => {
+  pool.query("SELECT * FROM TipoUsuario", async (err, rows) => {
+    if (!err) {
+      res.send({
+        code: 200,
+        success: "Tipos de usuario retornados con exito!",
+        rows,
+      });
+      console.log("Tipos de usuario retornado con exito!");
+      console.log(rows);
+    } else {
+      res.send({
+        code: 400,
+        failed: "un error ha ocurrido",
+      });
+      console.log(err);
+    }
+  });
+});
+
 module.exports = router;
