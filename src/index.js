@@ -21,11 +21,11 @@ app.set("port", process.env.PORT || 4000);
 
 //------Midlewares------
 app.use(morgan("dev"));
-app.use(
+/*app.use(
   cors({
     origin: "http://localhost:3000", //locacion del liente en react
   })
-); //permitir cross origin requests
+); //permitir cross origin requests*/
 app.use(
   session({
     secret: "clinicapsicoudp",
