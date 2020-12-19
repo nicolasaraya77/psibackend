@@ -8,15 +8,15 @@ router.get("/convenio", [md_auth.ensureAuth], async (req, res) => {
     if (!err) {
       res.send({
         code: 200,
-        success: "Convenios retornados con exito!",
-        data: rows,
+        message: "Convenios retornados con exito!",
+        rows,
       });
       console.log("Convenios retornados con exito!");
       console.log(rows);
     } else {
       res.send({
         code: 400,
-        failed: "un error ha ocurrido",
+        msg: "un error ha ocurrido",
       });
       console.log(err);
     }
@@ -32,7 +32,7 @@ router.get("/convenio/:id", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Convenio retornado con exito!",
+          message: "Convenio retornado con exito!",
           data: rows,
         });
         console.log("Convenio retornado con exito!");
@@ -40,7 +40,7 @@ router.get("/convenio/:id", [md_auth.ensureAuth], async (req, res) => {
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }
@@ -57,14 +57,14 @@ router.post("/convenio/nuevo", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Convenio nuevo ingresado exitosamente",
+          message: "Convenio nuevo ingresado exitosamente",
         });
         console.log("Convenio retornado con exito!");
         console.log(rows);
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }
@@ -81,12 +81,49 @@ router.delete("/convenio/:id", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Convenio eliminado exitosamente",
+          message: "Convenio eliminado exitosamente",
         });
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
+        });
+        console.log(err);
+      }
+    }
+  );
+});
+
+router.put("/convenio/:id", [md_auth.ensureAuth], async (req, res) => {
+  const id_Convenio = req.params.id;
+  const {
+    id_Convenio,
+    TipoInstitucion_id_TipoInstitucion,
+    nombre,
+    fecha_inicio,
+    estado,
+  } = req.body;
+  pool.query(
+    "UPDATE Convenio SET TipoInstitucion_id_TipoInstitucion = (?),  nombre = (?),  fecha_inicio = (?),  estado = (?) WHERE id_Convenio = (?)",
+    [
+      TipoInstitucion_id_TipoInstitucion,
+      nombre,
+      new Date(fecha_inicio),
+      estado,
+      id_Convenio,
+    ],
+    async (err, rows) => {
+      if (!err) {
+        res.send({
+          code: 200,
+          message: "Convenio cambiado exitosamente",
+        });
+        console.log("Convenio cambiado con exito!");
+        console.log(rows);
+      } else {
+        res.send({
+          code: 400,
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }

@@ -94,4 +94,44 @@ router.delete("/coordinador/:id", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
+router.put("/coordinador/:id", isLoggedIn, async (req, res) => {
+  const id_Coordinador = req.params.id;
+  const {
+    Convenio_id_Convenio,
+    nombre,
+    apellido,
+    cargo,
+    email,
+    telefono,
+  } = req.body;
+  pool.query(
+    "UPDATE Coordinador SET Convenio_id_Convenio = (?),  nombre = (?),  apellido = (?),  cargo = (?),  email = (?),  telefono = (?), WHERE id_Coordinador = (?)",
+    [
+      Convenio_id_Convenio,
+      nombre,
+      apellido,
+      cargo,
+      email,
+      telefono,
+      id_Coordinador,
+    ],
+    async (err, rows) => {
+      if (!err) {
+        res.send({
+          code: 200,
+          message: "Coordinador cambiado exitosamente",
+        });
+        console.log("Coordinador cambiado con exito!");
+        console.log(rows);
+      } else {
+        res.send({
+          code: 400,
+          msg: "un error ha ocurrido",
+        });
+        console.log(err);
+      }
+    }
+  );
+});
+
 module.exports = router;

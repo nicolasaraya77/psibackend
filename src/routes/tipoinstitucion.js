@@ -8,15 +8,15 @@ router.get("/tipoinstitucion", [md_auth.ensureAuth], async (req, res) => {
     if (!err) {
       res.send({
         code: 200,
-        success: "Tipo de Instituciones retornados con exito!",
-        data: rows,
+        message: "Tipo de Instituciones retornados con exito!",
+        rows,
       });
       console.log("Tipo de Instituciones retornados con exito!");
       console.log(rows);
     } else {
       res.send({
         code: 400,
-        failed: "un error ha ocurrido",
+        msg: "un error ha ocurrido",
       });
       console.log(err);
     }
@@ -32,7 +32,7 @@ router.get("/tipoinstitucion/:id", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Tipo de Institucion retornado con exito!",
+          message: "Tipo de Institucion retornado con exito!",
           data: rows,
         });
         console.log("Tipo de Institucion retornado con exito!");
@@ -40,7 +40,7 @@ router.get("/tipoinstitucion/:id", [md_auth.ensureAuth], async (req, res) => {
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }
@@ -60,14 +60,14 @@ router.post(
         if (!err) {
           res.send({
             code: 200,
-            success: "Tipo de Institucion nuevo ingresado exitosamente",
+            message: "Tipo de Institucion nuevo ingresado exitosamente",
           });
           console.log("Tipo de Institucion retornado con exito!");
           console.log(rows);
         } else {
           res.send({
             code: 400,
-            failed: "un error ha ocurrido",
+            msg: "un error ha ocurrido",
           });
           console.log(err);
         }
@@ -88,12 +88,12 @@ router.delete(
         if (!err) {
           res.send({
             code: 200,
-            success: "Tipo de Institucion eliminado exitosamente",
+            message: "Tipo de Institucion eliminado exitosamente",
           });
         } else {
           res.send({
             code: 400,
-            failed: "un error ha ocurrido",
+            msg: "un error ha ocurrido",
           });
           console.log(err);
         }
@@ -101,5 +101,30 @@ router.delete(
     );
   }
 );
+
+router.post("/tipoinstitucion:id", isLoggedIn, async (req, res) => {
+  const id_TipoInstitucion = req.params.id;
+  const { nombre } = req.body;
+  pool.query(
+    "UPDATE TipoInstitucion SET nombre = (?) WHERE id_TipoInstitucion  = (?)",
+    [nombre, id_TipoInstitucion],
+    async (err, rows) => {
+      if (!err) {
+        res.send({
+          code: 200,
+          message: "TipoInstitucion cambiado exitosamente",
+        });
+        console.log("TipoInstitucion cambiado con exito!");
+        console.log(rows);
+      } else {
+        res.send({
+          code: 400,
+          msg: "un error ha ocurrido",
+        });
+        console.log(err);
+      }
+    }
+  );
+});
 
 module.exports = router;

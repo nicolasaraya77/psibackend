@@ -29,7 +29,6 @@ router.post("/login", (req, res, next) => {
           token,
           message: "Inicio de sesión exitoso",
         });
-        console.log(token);
       });
     }
   })(req, res, next);
@@ -54,8 +53,6 @@ router.post("/signup", async (req, res, next) => {
               res.status(200).json({ message: "registro exitoso" });
             }
           }
-
-          console.log(req.user);
         });
       }
     }
@@ -63,7 +60,6 @@ router.post("/signup", async (req, res, next) => {
 });
 
 router.get("/logout", (req, res) => {
-  req.logOut();
   res.send("LogOut exitoso");
 });
 

@@ -7,6 +7,7 @@ router.get("/hechosconsultantes", [md_auth.ensureAuth], async (req, res) => {
   pool.query("SELECT * FROM HechosConsultantes", async (err, rows) => {
     if (!err) {
       res.status(200).send({
+        message: "hechosconsultantes retornados con exito!",
         rows,
       });
       console.log("hechosconsultantes retornados con exito!");
@@ -14,7 +15,7 @@ router.get("/hechosconsultantes", [md_auth.ensureAuth], async (req, res) => {
     } else {
       res.send({
         code: 400,
-        failed: "un error ha ocurrido",
+        msg: "un error ha ocurrido",
       });
       console.log(err);
     }
@@ -32,6 +33,7 @@ router.get(
       async (err, rows) => {
         if (!err) {
           res.status(200).send({
+            message: "hechosconsultantes retornados con exito!",
             rows,
           });
 
@@ -40,7 +42,7 @@ router.get(
         } else {
           res.send({
             code: 400,
-            failed: "un error ha ocurrido",
+            msg: "un error ha ocurrido",
           });
           console.log(err);
         }

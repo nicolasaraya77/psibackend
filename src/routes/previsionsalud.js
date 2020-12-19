@@ -8,7 +8,7 @@ router.get("/prevision-salud", [md_auth.ensureAuth], async (req, res) => {
     if (!err) {
       res.send({
         code: 200,
-        success: "Previsiones retornadas con exito!",
+        message: "Previsiones retornadas con exito!",
         rows,
       });
       console.log("Previsiones retornadas con exito!");
@@ -16,7 +16,7 @@ router.get("/prevision-salud", [md_auth.ensureAuth], async (req, res) => {
     } else {
       res.send({
         code: 400,
-        failed: "un error ha ocurrido",
+        msg: "un error ha ocurrido",
       });
       console.log(err);
     }
@@ -32,15 +32,15 @@ router.get("/prevision-salud/:id", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Prevision retornado con exito!",
-          data: rows,
+          message: "Prevision retornado con exito!",
+          rows,
         });
         console.log("Estado retornado con exito!");
         console.log(rows);
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }
@@ -49,6 +49,7 @@ router.get("/prevision-salud/:id", [md_auth.ensureAuth], async (req, res) => {
 });
 
 router.put("/prevision-salud/:id", [md_auth.ensureAuth], async (req, res) => {
+  const id_PrevisionSalud = req.params.id;
   const { id_PrevisionSalud, nombre } = req.body;
   pool.query(
     "UPDATE PrevisionSalud SET nombre = (?) WHERE id_Estado = (?)",
@@ -57,14 +58,14 @@ router.put("/prevision-salud/:id", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Estado cambiado exitosamente",
+          message: "Estado cambiado exitosamente",
         });
         console.log("Estado cambiado con exito!");
         console.log(rows);
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }
@@ -81,14 +82,14 @@ router.post("/prevision-salud", [md_auth.ensureAuth], async (req, res) => {
       if (!err) {
         res.send({
           code: 200,
-          success: "Prevision nueva ingresado exitosamente",
+          message: "Prevision nueva ingresado exitosamente",
         });
         console.log("Estado retornado con exito!");
         console.log(rows);
       } else {
         res.send({
           code: 400,
-          failed: "un error ha ocurrido",
+          msg: "un error ha ocurrido",
         });
         console.log(err);
       }
@@ -100,7 +101,7 @@ router.delete(
   "/prevision-salud/:id",
   [md_auth.ensureAuth],
   async (req, res) => {
-    const { id_PrevisionSalud } = req.params;
+    const { id_PrevisionSalud } = req.params.id;
     pool.query(
       "DELETE FROM PrevisionSalud WHERE id_Estado = ?",
       [id_PrevisionSalud],
@@ -108,12 +109,12 @@ router.delete(
         if (!err) {
           res.send({
             code: 200,
-            success: "Estado eliminado exitosamente",
+            message: "Estado eliminado exitosamente",
           });
         } else {
           res.send({
             code: 400,
-            failed: "un error ha ocurrido",
+            msg: "un error ha ocurrido",
           });
           console.log(err);
         }

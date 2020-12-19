@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { isLoggedIn } = require("../lib/auth");
 
-router.get("/", isLoggedIn, async (req, res) => {
+router.get("/", async (req, res) => {
   res.send({
     code: 200,
     success: "Hello world! Successfully Authenticated",
