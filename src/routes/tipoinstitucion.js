@@ -102,7 +102,7 @@ router.delete(
   }
 );
 
-router.post("/tipoinstitucion:id", isLoggedIn, async (req, res) => {
+router.post("/tipoinstitucion:id", [md_auth.ensureAuth], async (req, res) => {
   const id_TipoInstitucion = req.params.id;
   const { nombre } = req.body;
   pool.query(

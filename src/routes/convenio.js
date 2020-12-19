@@ -97,7 +97,6 @@ router.delete("/convenio/:id", [md_auth.ensureAuth], async (req, res) => {
 router.put("/convenio/:id", [md_auth.ensureAuth], async (req, res) => {
   const id_Convenio = req.params.id;
   const {
-    id_Convenio,
     TipoInstitucion_id_TipoInstitucion,
     nombre,
     fecha_inicio,

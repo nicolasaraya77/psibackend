@@ -94,7 +94,7 @@ router.delete("/coordinador/:id", [md_auth.ensureAuth], async (req, res) => {
   );
 });
 
-router.put("/coordinador/:id", isLoggedIn, async (req, res) => {
+router.put("/coordinador/:id", [md_auth.ensureAuth], async (req, res) => {
   const id_Coordinador = req.params.id;
   const {
     Convenio_id_Convenio,

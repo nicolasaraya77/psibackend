@@ -103,7 +103,7 @@ router.get("/tipousuario", async (req, res) => {
   });
 });
 
-router.delete("/usuario/:id", isLoggedIn, async (req, res) => {
+router.delete("/usuario/:id", [md_auth.ensureAuth], async (req, res) => {
   const { id } = req.params;
   pool.query(
     "DELETE FROM Usuario WHERE id_Usuario = ?",
@@ -125,7 +125,7 @@ router.delete("/usuario/:id", isLoggedIn, async (req, res) => {
   );
 });
 
-router.get("/politica/:id", isLoggedIn, async (req, res) => {
+router.get("/politica/:id", [md_auth.ensureAuth], async (req, res) => {
   const { id } = req.params;
   pool.query(
     "SELECT Politica.nombre FROM Politica INNER JOIN Permiso ON Permiso.Politica_id_Politica = Politica.id_Politica WHERE Permiso.TipoUsuario_id_TipoUsuario = ?;",
@@ -150,7 +150,7 @@ router.get("/politica/:id", isLoggedIn, async (req, res) => {
   );
 });
 
-router.post("/tipousuario/nuevo", isLoggedIn, async (req, res) => {
+router.post("/tipousuario/nuevo", [md_auth.ensureAuth], async (req, res) => {
   const { nombre } = req.body;
   pool.query(
     "INSERT INTO TipoUsuario (nombre) VALUES (?)",
@@ -174,7 +174,7 @@ router.post("/tipousuario/nuevo", isLoggedIn, async (req, res) => {
   );
 });
 
-router.put("/tipousuario", isLoggedIn, async (req, res) => {
+router.put("/tipousuario", [md_auth.ensureAuth], async (req, res) => {
   const id_TipoUsuario = req.params.id;
   const { nombre } = req.body;
   pool.query(
@@ -199,7 +199,7 @@ router.put("/tipousuario", isLoggedIn, async (req, res) => {
   );
 });
 
-router.delete("/tipousuario/:id", isLoggedIn, async (req, res) => {
+router.delete("/tipousuario/:id", [md_auth.ensureAuth], async (req, res) => {
   const { id } = req.params;
   pool.query(
     "DELETE FROM TipoUsuario WHERE id_TipoUsuario = ?",

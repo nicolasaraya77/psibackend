@@ -131,7 +131,7 @@ router.delete("/derivacion/:id", [md_auth.ensureAuth], async (req, res) => {
 
 router.put("/derivacion/:id", [md_auth.ensureAuth], async (req, res) => {
   const id_Derivacion = req.params.id;
-  const { id_Derivacion, Motivo_id_Motivo } = req.body;
+  const { Motivo_id_Motivo } = req.body;
   pool.query(
     "UPDATE Derivacion SET Motivo_id_Motivo = (?) WHERE id_Derivacion = (?)",
     [Motivo_id_Motivo, id_Derivacion],
